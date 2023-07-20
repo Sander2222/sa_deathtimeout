@@ -20,8 +20,7 @@ ui_page ('ui/ui.html')
 files {
     'ui/ui.html',
     'ui/style.css',
-    'ui/app.js',
-    'ui/serverimg.png.png'
+    'ui/app.js'
 }
 
 dependencies {

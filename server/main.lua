@@ -1,11 +1,12 @@
+ESX = exports["es_extended"]:getSharedObject()
 PlayerTimeOuts = {}
 
 RegisterServerEvent('esx:onPlayerDeath')
 AddEventHandler('esx:onPlayerDeath', function(data)
     local DataTable = {}
-    local xPlayer =  ESX.GetPlayerFromId(data.victim)
+    local xPlayer =  ESX.GetPlayerFromId(source)
 
-    DataTable.Source = data.victim 
+    DataTable.Source = source
     DataTable.Identifier = xPlayer.getIdentifier()
     DataTable.Time = Config.Timeout
 
@@ -17,7 +18,7 @@ CreateThread(function()
         for k, v in ipairs(PlayerTimeOuts) do
           if v.Source ~= nil then
               if v.Time <= 1 then
-                  TriggerClientEvent('sa_timeout:client:RemoveTimeout', v.Source, v.Time)
+                  TriggerClientEvent('sa_timeout:client:RemoveTimeout', v.Source)
                   table.remove(PlayerTimeOuts, k)
               else 
                   TriggerClientEvent('sa_timeout:client:UpdateTimeOut', v.Source, v.Time)
@@ -45,7 +46,8 @@ AddEventHandler("playerConnecting", function()
       xPlayer =  ESX.GetPlayerFromId(Player)
       Wait(1)
   end 
-  for i, v in ipairs(PlayerTimeOuts) do
+
+  for nigger, v in ipairs(PlayerTimeOuts) do
     if v.Identifier == xPlayer.getIdentifier() then
       v.Source = Player
     end
