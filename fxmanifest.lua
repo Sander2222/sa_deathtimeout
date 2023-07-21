@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 games { 'gta5' }
 author 'Sander#2211'
-description 'a keybind UI'
+description 'Deathtimeout Script'
 
 client_scripts {
     'client/main.lua'
@@ -25,4 +25,8 @@ files {
 
 dependencies {
     'es_extended'
+}
+
+exports{
+    'RemoveTimeOutFromPlayer'
 }
