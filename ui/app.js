@@ -19,9 +19,8 @@ $(function() {
                 //Vars für Daten
                 var TimeInSec = item.time
 
-                document.getElementById('Sec').innerHTML = secondsToTime(TimeInSec);
+                document.getElementById('Sec').innerHTML = `Du bist noch ${secondsToTime(TimeInSec)} bewusstlos`.toUpperCase();
             } else {
-                console.log("js zu")
                 display(false)
             }
         }
