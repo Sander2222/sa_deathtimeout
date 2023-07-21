@@ -1,5 +1,6 @@
 ESX = exports["es_extended"]:getSharedObject()
 UiActive = false
+TimeSendServer = 0
 
 -- RegisterNUICallback("exit", function(data)
 --     SetDisplay(false)
@@ -23,7 +24,6 @@ UiActive = false
 
 function SetDisplay(Time)
     if not UiActive then
-        print("ff")
         SendNUIMessage({
             type = "ui",
             status = "show"
@@ -31,7 +31,6 @@ function SetDisplay(Time)
     end
     UiActive = true
 
-    print("ldldff")
     SendNUIMessage({
         type = "ui",
         status = "add",
@@ -42,8 +41,9 @@ end
 RegisterNetEvent('sa_timeout:client:UpdateTimeOut')
 AddEventHandler('sa_timeout:client:UpdateTimeOut', function(TimeSec)
     SetDisplay(TimeSec)
+    local Time = 0
 
-    print("Update", TimeSec)
+    TimeSendServer = 1000 
 end)
 
 RegisterNetEvent('sa_timeout:client:RemoveTimeout')
@@ -54,4 +54,37 @@ AddEventHandler('sa_timeout:client:RemoveTimeout', function()
         status = "close"
     })
     UiActive = false
+end)
+
+RegisterNetEvent('esx_ambulancejob:revive')
+AddEventHandler('esx_ambulancejob:revive', function()
+    TriggerServerEvent('sa_timeout:server:AddPlayerTimeout')
+end)
+
+Weapon = false
+
+CreateThread(function ()
+	while true do
+        if TimeSendServer > 0 or UiActive then
+            if not UiActive then
+                TimeSendServer = 0
+            end
+            DisableControlAction(1, 37) -- TAB
+            DisableControlAction(1, 24) -- Left Mouse
+            DisableControlAction(1, 140) -- R
+			SetCurrentPedWeapon(PlayerPedId(), GetHashKey("WEAPON_UNARMED"), true) -- Set weapon on hands
+            TimeSendServer = TimeSendServer - 1
+        else 
+            Wait(500)
+        end
+        Wait(1)
+	end
+end)
+
+RegisterCommand('we', function(source, args, rawCommand)
+    if args[1] == "1" then
+        Weapon = true
+    else 
+        Weapon = false
+    end
 end)
