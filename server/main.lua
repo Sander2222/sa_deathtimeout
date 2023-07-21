@@ -1,28 +1,72 @@
 ESX = exports["es_extended"]:getSharedObject()
 PlayerTimeOuts = {}
 
-RegisterServerEvent('esx:onPlayerDeath')
-AddEventHandler('esx:onPlayerDeath', function(data)
-    local DataTable = {}
-    local xPlayer =  ESX.GetPlayerFromId(source)
+RegisterCommand(Config.RemoveTimeout, function(source, args, rawCommand)
+  local xPlayer = ESX.GetPlayerFromId(source)
 
-    DataTable.Source = source
-    DataTable.Identifier = xPlayer.getIdentifier()
-    DataTable.Time = Config.Timeout
+  if not next(args) then return end
 
-    table.insert(PlayerTimeOuts, DataTable)
+  if xPlayer.getGroup() == ("admin" or "mod") then
+    RemoveTimeOutFromPlayer(tonumber(args[1]), source)
+  else 
+    xPlayer.showNotification(Config.Locals['NoRights'])
+  end
 end)
+
+RegisterNetEvent('sa_timeout:server:AddPlayerTimeout')
+AddEventHandler('sa_timeout:server:AddPlayerTimeout', function()
+  AddTimeoutToPlayer(source)
+end)
+
+function AddTimeoutToPlayer(TargetID)
+  local DataTable = {}
+  local xPlayer =  ESX.GetPlayerFromId(TargetID)
+
+  DataTable.Source = TargetID
+  DataTable.Identifier = xPlayer.getIdentifier()
+  DataTable.Time = Config.Timeout
+
+  table.insert(PlayerTimeOuts, DataTable)
+end
+
+function RemoveTimeOutFromPlayer(TargetID, PlayerID)
+  for i, v in ipairs(PlayerTimeOuts) do
+    if v.Source == TargetID then
+      v.Time = 0
+      
+      if not PlayerID == TargetID then
+        -- Notify target
+        local xTarget = ESX.GetPlayerFromId(TargetID)
+        xTarget.showNotification(Config.Locals['TargetRemoveTimeout'])
+
+        if PlayerID ~= nil then
+          -- Notify Player
+          local xPlayer = ESX.GetPlayerFromId(PlayerID)
+          xPlayer.showNotification((Config.Locals['PlayerRemovedTimeout']):format(TargetID))
+        end
+      else 
+        local xPlayer = ESX.GetPlayerFromId(PlayerID)
+        xPlayer.showNotification(Config.Locals['RemovedSelfTimeout'])
+      end
+
+      return
+    end
+  end
+
+  local xPlayer = ESX.GetPlayerFromId(PlayerID)
+  xPlayer.showNotification(Config.Locals['NoPlayerWithTimeOut'])
+end
 
 CreateThread(function()
     while true do
         for k, v in ipairs(PlayerTimeOuts) do
           if v.Source ~= nil then
-              if v.Time <= 1 then
+              if v.Time <= 0 then
                   TriggerClientEvent('sa_timeout:client:RemoveTimeout', v.Source)
                   table.remove(PlayerTimeOuts, k)
               else 
                   TriggerClientEvent('sa_timeout:client:UpdateTimeOut', v.Source, v.Time)
-                  v.Time = v.Time - 1 
+                  v.Time = v.Time - 1
               end
             end
         end
@@ -38,18 +82,14 @@ AddEventHandler('playerDropped', function(reason)
   end
 end)
 
+RegisterNetEvent('esx:onPlayerSpawn')
+AddEventHandler('esx:onPlayerSpawn', function()
+  local source = source
+  local xPlayer =  ESX.GetPlayerFromId(source)
 
-AddEventHandler("playerConnecting", function()
-  local Player = source
-  local xPlayer
-  while xPlayer == nil do
-      xPlayer =  ESX.GetPlayerFromId(Player)
-      Wait(1)
-  end 
-
-  for nigger, v in ipairs(PlayerTimeOuts) do
+  for k, v in ipairs(PlayerTimeOuts) do
     if v.Identifier == xPlayer.getIdentifier() then
-      v.Source = Player
+      v.Source = source
     end
   end
 end)
