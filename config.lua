@@ -3,6 +3,8 @@ Config = {}
 Config.Timeout = 30 -- In Sekunden angeben 
 
 Config.RemoveTimeout = 'removetimeout'
+Config.RemoveTimeoutRadius = 'removeradius'
+Config.Groups = {'admin', 'mod'}
 
 Config.Locals = {
     ['TargetRemoveTimeout'] = 'Dir wurde dein Timeout removed',
