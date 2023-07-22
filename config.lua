@@ -11,5 +11,6 @@ Config.Locals = {
     ['PlayerRemovedTimeout'] = 'Du hast der Spieler ID %s den Timeout entfernt',
     ['RemovedSelfTimeout'] = 'Du hast dir selber den Timeout entfernt',
     ['NoPlayerWithTimeOut'] = 'Es gibt keinen Spieler der einen Timeout hat mit dieser ID',
-    ['NoRights'] = 'Du hast dazu keine Rechte'
+    ['NoRights'] = 'Du hast dazu keine Rechte',
+    ['EnterNumber'] = 'Du musst einen Radius als Zahl angeben'
 }
