@@ -84,7 +84,7 @@ end)
 RegisterCommand(Config.RemoveTimeoutRadius, function(source, args, rawCommand)
     ESX.TriggerServerCallback('sa_timeout:callback:CheckGroup', function(CanUseCommand)
         if CanUseCommand then
-            if not next(args) then
+            if next(args) ~= nil then
                 local TmpPlayers = ESX.Game.GetPlayersInArea(GetEntityCoords(PlayerPedId()), tonumber(args[1]))
                 local Players = {}
 
@@ -92,11 +92,12 @@ RegisterCommand(Config.RemoveTimeoutRadius, function(source, args, rawCommand)
                     table.insert(Players, GetPlayerServerId(v))
                 end
 
-                if next(Players) then
+                if next(Players) == nil then
                      ESX.ShowNotification('Es sind keine Spieler in der nähe')
                     return
                 end
                 
+                print(ESX.DumpTable(Players))
                 TriggerServerEvent('sa_timeout:server:RemoveTimeoutFromPlayers', Players)
             else
                 ESX.ShowNotification(Config.Locals['EnterNumber'])
