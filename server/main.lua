@@ -6,7 +6,7 @@ RegisterCommand(Config.RemoveTimeout, function(source, args, rawCommand)
 
   if not next(args) then return end
 
-  if xPlayer.getGroup() == ("admin" or "mod") then
+  if CheckGroup(xPlayer.getGroup()) then
     RemoveTimeOutFromPlayer(tonumber(args[1]), source)
   else 
     xPlayer.showNotification(Config.Locals['NoRights'])
@@ -93,3 +93,32 @@ AddEventHandler('esx:onPlayerSpawn', function()
     end
   end
 end)
+
+RegisterNetEvent('sa_timeout:server:RemoveTimeoutFromPlayers')
+AddEventHandler('sa_timeout:server:RemoveTimeoutFromPlayers', function(PlayerList)
+  local xPlayer =  ESX.GetPlayerFromId(source)
+
+  if CheckGroup(xPlayer.getGroup()) then
+    for k, v in pairs(PlayerList) do
+      RemoveTimeOutFromPlayer(v)
+    end
+  else 
+    print(('SA Timeout: Diese ID %s ist wahrscheinlich ein Modder: %s'):format(source, xPlayer.getIdentifier()))
+    xPlayer.kick('Bitte melde dich im Support')
+  end
+end)
+
+ESX.RegisterServerCallback('sa_timeout:callback:CheckGroup', function(src, cb)
+  local xPlayer = ESX.GetPlayerFromId(src)
+  cb(CheckGroup(xPlayer.getGroup()))
+end)
+
+function CheckGroup(Group)
+  for k, v in pairs(Config.Groups) do
+    if v == Group then
+      return true
+    end
+  end
+
+  return false
+end

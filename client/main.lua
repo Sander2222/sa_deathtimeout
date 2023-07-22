@@ -81,10 +81,28 @@ CreateThread(function ()
 	end
 end)
 
-RegisterCommand('we', function(source, args, rawCommand)
-    if args[1] == "1" then
-        Weapon = true
-    else 
-        Weapon = false
-    end
+RegisterCommand(Config.RemoveTimeoutRadius, function(source, args, rawCommand)
+    ESX.TriggerServerCallback('sa_timeout:callback:CheckGroup', function(CanUseCommand)
+        if CanUseCommand then
+            if not next(args) then
+                local TmpPlayers = ESX.Game.GetPlayersInArea(GetEntityCoords(PlayerPedId()), tonumber(args[1]))
+                local Players = {}
+
+                for k,v in ipairs(TmpPlayers) do
+                    table.insert(Players, GetPlayerServerId(v))
+                end
+
+                if next(Players) then
+                     ESX.ShowNotification('Es sind keine Spieler in der nähe')
+                    return
+                end
+                
+                TriggerServerEvent('sa_timeout:server:RemoveTimeoutFromPlayers', Players)
+            else
+                ESX.ShowNotification(Config.Locals['EnterNumber'])
+            end
+        else
+            ESX.ShowNotification(Config.Locals['NoRights'])
+        end
+    end)
 end)
