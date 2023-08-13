@@ -103,8 +103,8 @@ AddEventHandler('sa_timeout:server:RemoveTimeoutFromPlayers', function(PlayerLis
       RemoveTimeOutFromPlayer(v)
     end
   else 
-    print(('SA Timeout: Diese ID %s ist wahrscheinlich ein Modder: %s'):format(source, xPlayer.getIdentifier()))
-    xPlayer.kick('Bitte melde dich im Support')
+    print((Config.Locals['ProbablyModder']):format(source, xPlayer.getIdentifier()))
+    xPlayer.kick(Config.Locals['ContactSupport'])
   end
 end)
 

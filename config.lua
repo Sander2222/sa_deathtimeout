@@ -1,16 +1,19 @@
 Config = {}
 
-Config.Timeout = 30 -- In Sekunden angeben 
+Config.Timeout = 30 -- in sec
 
 Config.RemoveTimeout = 'removetimeout'
 Config.RemoveTimeoutRadius = 'removeradius'
 Config.Groups = {'admin', 'mod'}
 
 Config.Locals = {
-    ['TargetRemoveTimeout'] = 'Dir wurde dein Timeout removed',
-    ['PlayerRemovedTimeout'] = 'Du hast der Spieler ID %s den Timeout entfernt',
-    ['RemovedSelfTimeout'] = 'Du hast dir selber den Timeout entfernt',
-    ['NoPlayerWithTimeOut'] = 'Es gibt keinen Spieler der einen Timeout hat mit dieser ID',
-    ['NoRights'] = 'Du hast dazu keine Rechte',
-    ['EnterNumber'] = 'Du musst einen Radius als Zahl angeben'
+    ['TargetRemoveTimeout'] = 'Your timeout has removed',
+    ['PlayerRemovedTimeout'] = 'You removed the player %s the timeout',
+    ['RemovedSelfTimeout'] = 'You removed the timeout yourself',
+    ['NoPlayerWithTimeOut'] = 'There is no player who has a timeout with this ID',
+    ['NoRights'] = 'You have no permission to do that',
+    ['EnterNumber'] = 'You must specify a radius as a number',
+    ['ContactSupport'] = 'Please contact our support',
+    ['NoPlayers'] = 'There are no players nearby',
+    ['ProbablyModder'] = 'This ID %s is probably a modder: %s'
 }

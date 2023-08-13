@@ -28,14 +28,11 @@ $(function() {
 })
 
 function secondsToTime(seconds) {
-    // Berechne die Minuten und Sekunden
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    
-    // Füge führende Nullen hinzu, wenn nötig
+
     const formattedMinutes = minutes.toString().padStart(2, '0');
     const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
     
-    // Gib das Ergebnis im Format "mm:ss" zurück
     return `${formattedMinutes}:${formattedSeconds}`;
   }

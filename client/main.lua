@@ -1,26 +1,7 @@
 ESX = exports["es_extended"]:getSharedObject()
+
 UiActive = false
 TimeSendServer = 0
-
--- RegisterNUICallback("exit", function(data)
---     SetDisplay(false)
--- end)
-
--- --
--- -- Disable keys
--- --
--- Citizen.CreateThread(function()
---     while display do
---         Citizen.Wait(0)
---         DisableControlAction(0, 1, display)
---         DisableControlAction(0, 2, display)
---         DisableControlAction(0, 142, display)
---         DisableControlAction(0, 18, display)
---         DisableControlAction(0, 322, display)
---         DisableControlAction(0, 106, display)
---     end
--- end)
-
 
 function SetDisplay(Time)
     if not UiActive then
@@ -93,11 +74,10 @@ RegisterCommand(Config.RemoveTimeoutRadius, function(source, args, rawCommand)
                 end
 
                 if next(Players) == nil then
-                     ESX.ShowNotification('Es sind keine Spieler in der nähe')
+                     ESX.ShowNotification(Config.Locals['NoPlayers'])
                     return
                 end
                 
-                print(ESX.DumpTable(Players))
                 TriggerServerEvent('sa_timeout:server:RemoveTimeoutFromPlayers', Players)
             else
                 ESX.ShowNotification(Config.Locals['EnterNumber'])
