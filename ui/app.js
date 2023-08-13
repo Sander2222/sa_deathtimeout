@@ -19,7 +19,7 @@ $(function() {
                 //Vars für Daten
                 var TimeInSec = item.time
 
-                document.getElementById('Sec').innerHTML = `Du bist noch ${secondsToTime(TimeInSec)} bewusstlos`.toUpperCase();
+                document.getElementById('Sec').innerHTML = `you are incapacitated for ${secondsToTime(TimeInSec)}`.toUpperCase();
             } else {
                 display(false)
             }
