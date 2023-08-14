@@ -1,4 +1,4 @@
-# sa_timeout
+# sa_deathtimeout
 
 just a simple script
 
