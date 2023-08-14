@@ -19,16 +19,16 @@ function SetDisplay(Time)
     })
 end
 
-RegisterNetEvent('sa_timeout:client:UpdateTimeOut')
-AddEventHandler('sa_timeout:client:UpdateTimeOut', function(TimeSec)
+RegisterNetEvent('sa_deathtimeout:client:UpdateTimeOut')
+AddEventHandler('sa_deathtimeout:client:UpdateTimeOut', function(TimeSec)
     SetDisplay(TimeSec)
     local Time = 0
 
     TimeSendServer = 1000 
 end)
 
-RegisterNetEvent('sa_timeout:client:RemoveTimeout')
-AddEventHandler('sa_timeout:client:RemoveTimeout', function()
+RegisterNetEvent('sa_deathtimeout:client:RemoveTimeout')
+AddEventHandler('sa_deathtimeout:client:RemoveTimeout', function()
     -- Disable UI
     SendNUIMessage({
         type = "ui",
@@ -39,7 +39,7 @@ end)
 
 RegisterNetEvent('esx_ambulancejob:revive')
 AddEventHandler('esx_ambulancejob:revive', function()
-    TriggerServerEvent('sa_timeout:server:AddPlayerTimeout')
+    TriggerServerEvent('sa_deathtimeout:server:AddPlayerTimeout')
 end)
 
 Weapon = false
@@ -63,7 +63,7 @@ CreateThread(function ()
 end)
 
 RegisterCommand(Config.RemoveTimeoutRadius, function(source, args, rawCommand)
-    ESX.TriggerServerCallback('sa_timeout:callback:CheckGroup', function(CanUseCommand)
+    ESX.TriggerServerCallback('sa_deathtimeout:callback:CheckGroup', function(CanUseCommand)
         if CanUseCommand then
             if next(args) ~= nil then
                 local TmpPlayers = ESX.Game.GetPlayersInArea(GetEntityCoords(PlayerPedId()), tonumber(args[1]))
@@ -78,7 +78,7 @@ RegisterCommand(Config.RemoveTimeoutRadius, function(source, args, rawCommand)
                     return
                 end
                 
-                TriggerServerEvent('sa_timeout:server:RemoveTimeoutFromPlayers', Players)
+                TriggerServerEvent('sa_deathtimeout:server:RemoveTimeoutFromPlayers', Players)
             else
                 ESX.ShowNotification(Config.Locals['EnterNumber'])
             end

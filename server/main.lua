@@ -13,8 +13,8 @@ RegisterCommand(Config.RemoveTimeout, function(source, args, rawCommand)
   end
 end)
 
-RegisterNetEvent('sa_timeout:server:AddPlayerTimeout')
-AddEventHandler('sa_timeout:server:AddPlayerTimeout', function()
+RegisterNetEvent('sa_deathtimeout:server:AddPlayerTimeout')
+AddEventHandler('sa_deathtimeout:server:AddPlayerTimeout', function()
   AddTimeoutToPlayer(source)
 end)
 
@@ -62,10 +62,10 @@ CreateThread(function()
         for k, v in ipairs(PlayerTimeOuts) do
           if v.Source ~= nil then
               if v.Time <= 0 then
-                  TriggerClientEvent('sa_timeout:client:RemoveTimeout', v.Source)
+                  TriggerClientEvent('sa_deathtimeout:client:RemoveTimeout', v.Source)
                   table.remove(PlayerTimeOuts, k)
               else 
-                  TriggerClientEvent('sa_timeout:client:UpdateTimeOut', v.Source, v.Time)
+                  TriggerClientEvent('sa_deathtimeout:client:UpdateTimeOut', v.Source, v.Time)
                   v.Time = v.Time - 1
               end
             end
@@ -94,8 +94,8 @@ AddEventHandler('esx:onPlayerSpawn', function()
   end
 end)
 
-RegisterNetEvent('sa_timeout:server:RemoveTimeoutFromPlayers')
-AddEventHandler('sa_timeout:server:RemoveTimeoutFromPlayers', function(PlayerList)
+RegisterNetEvent('sa_deathtimeout:server:RemoveTimeoutFromPlayers')
+AddEventHandler('sa_deathtimeout:server:RemoveTimeoutFromPlayers', function(PlayerList)
   local xPlayer =  ESX.GetPlayerFromId(source)
 
   if CheckGroup(xPlayer.getGroup()) then
@@ -108,7 +108,7 @@ AddEventHandler('sa_timeout:server:RemoveTimeoutFromPlayers', function(PlayerLis
   end
 end)
 
-ESX.RegisterServerCallback('sa_timeout:callback:CheckGroup', function(src, cb)
+ESX.RegisterServerCallback('sa_deathtimeout:callback:CheckGroup', function(src, cb)
   local xPlayer = ESX.GetPlayerFromId(src)
   cb(CheckGroup(xPlayer.getGroup()))
 end)
